@@ -2,7 +2,7 @@
 Want a private space for yourself ?Do private chatting using CLIchatter without tension of data and privacy issue.
 Just clone this repositry in your system
 In linux just run this command
-gitclone https://github.com/Wilooper/CLIchatter
+https://github.com/Wilooper/CLIchatter.git
 and then run 
 cd CLIchatter
 now run python3 server.py to start server
