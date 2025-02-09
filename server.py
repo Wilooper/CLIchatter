@@ -1,4 +1,4 @@
- 
+                                                       server.py
 import socket
 import threading
 
@@ -12,7 +12,7 @@ def handle_client(client_socket):
             client_socket.send("Username already taken!".encode('utf-8'))
             client_socket.close()
             return
-        
+
         clients[username] = client_socket
         print(f"{username} connected")
         client_socket.send("Connected to server!".encode('utf-8'))
@@ -27,7 +27,7 @@ def handle_client(client_socket):
                 if len(parts) < 3:
                     client_socket.send("Invalid PM format. Use: /msg recipient message".encode('utf-8'))
                     continue
-                
+
                 _, recipient, pm_content = parts
                 if recipient in clients:
                     clients[recipient].send(f"[PM from {username}] {pm_content}".encode('utf-8'))
@@ -50,10 +50,12 @@ def handle_client(client_socket):
 
 def start_server():
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    # Enable port reuse - THIS IS THE FIX
+    server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     server.bind(('localhost', 5555))
     server.listen()
     print("Server listening on port 5555...")
-    
+
     while True:
         client_socket, addr = server.accept()
         thread = threading.Thread(target=handle_client, args=(client_socket,))
